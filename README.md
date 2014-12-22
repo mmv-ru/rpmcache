@@ -9,22 +9,22 @@ The script won't delete files until you set **DEBUG to 0** or comment out this l
 
 Usage:
 
-rpmcache -l --list : list all the rpm packages
-rpmcache -d --delete [N] : list the packages that would be deleted while keeping the N latest versions of the rpms.
-rpmcache -k --keep [N] : list the packages that would be kept in cache while keeping the N latest versions of the rpms.
-rpmcache -o --orphans : delete rpms of non installed packages only.
+**rpmcache -l --list** : list all the rpm packages
+**rpmcache -d --delete [N]** : list the packages that would be deleted while keeping the N latest versions of the rpms.
+**rpmcache -k --keep [N]** : list the packages that would be kept in cache while keeping the N latest versions of the rpms.
+**rpmcache -o --orphans** : delete rpms of non installed packages only.
 
 Only one option can be used (sorry , I could have combined -d and -o).
 These options only display files and won't delete anything (no matter the state of the DEBUG flag).
 Obviously, merging the output of rpmcache --delete and rpmcache --keep should match the (sorted) output of rpmcache --list.
 
 Now the destructive options (if DEBUG is commented out or set to 0):
-rpmcache -D: delete the rpms but preserve the 2 latest versions.
-rpmcache -D 1 : delete the rpms but preserve the latest version.
-rpmcache -D 3 : delete the rpms but preserve the 3 latest versions.
-rpmcache -D 0 : delete all the rpms ( preserving 0 latest version).
-rpmcache -D N : delete the rpms but preserve the N latest versions.
-rpmcache -O : delete "orphan" rpms, rpms still in cache for packages that are not installed (most likely because they have been deinstalled).
+**rpmcache -D**: delete the rpms but preserve the 2 latest versions.
+**rpmcache -D 1** : delete the rpms but preserve the latest version.
+**rpmcache -D 3** : delete the rpms but preserve the 3 latest versions.
+**rpmcache -D 0** : delete all the rpms ( preserving 0 latest version).
+**rpmcache -D N** : delete the rpms but preserve the N latest versions.
+**rpmcache -O** : delete "orphan" rpms, rpms still in cache for packages that are not installed (most likely because they have been deinstalled).
 
 Delta files - if they are any - will be deleted in any case.
 
