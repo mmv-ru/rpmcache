@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 #: Title       : rpmcache
 #: Date Created: Sat Aug 20 14:27:51 PDT 2011 
 #: Last Edit   : Mon Jan  2 13:04:04 PST 2012
@@ -12,12 +12,12 @@
 # !!! comment out this line or set DEBUG to 0 to really delete rpms !!!
 DEBUG=1
 
-PKGDIR=/var/cache/zypp/packages
+PKGDIR=/var/cache/yum/x86_64/20
 NumVer=2
 
 TMPDIR=${TMPDIR:-/tmp}
-PKGDIR_DEF=$(awk '/packagesdir *=/ { print $NF}' /etc/zypp/zypp.conf)
-PKGDIR=${PKGDIR:-PKGDIR_DEF}
+#PKGDIR_DEF=$(awk '/packagesdir *=/ { print $NF}' /etc/zypp/zypp.conf)
+#PKGDIR=${PKGDIR:-PKGDIR_DEF}
 pkglst=$TMPDIR/pkg.lst
 orplst=$TMPDIR/orp.lst
 dellst=$TMPDIR/del.lst
@@ -38,8 +38,8 @@ echo "Processing list of rpms ${!1} ..."
 lst=${1}lst ; lst=${!lst}
 [ "$1" == "del" -o "$1" == "kep" ] && C=$NumVer || C=0
 echo > $lst
-for dir in $(find -L $PKGDIR -mindepth 2 -type d ! -empty -name "$Arch" -o -name "noarch" ) ; do
-  ls -1 $dir | sed '/delta.rpm/d' | sed -f $spksed \
+for dir in $(find -L $PKGDIR -mindepth 2 -type d ! -empty ) ; do
+  ls -1r $dir | sed '/delta.rpm/d' | sed -f $spksed \
 | awk '{ if ( $1 == P ) print "#", $1"-"$2 ; else print $1"-"$2 ; P=$1 }' \
 | sed -e :a -e '$!N;s/\n#/ /;ta' -e 'P;D' | sed 's/  / /g' \
 | awk 'BEGIN { C='$C' } ; { if (NF > C) {for (i=C+1; i <= NF ; i++) print $i}}' \
@@ -56,7 +56,8 @@ fi
 # list installed packages and available rpms 
 function lst_pkgs {
 	echo "Looking for installed packages ..."
-	zypper se -i -t package | awk '/^i/{ print "s/\\("$3"\\)-\\([0-9A-E]\\)/\\1 \\2/"} ; END {print "s/ \\(32bit\\)-/-\\1 /;s/ \\(.*\\) /-\\1 /"}' > $spksed
+	yum list installed | awk '/^i/{ print "s/\\("$3"\\)-\\([0-9A-E]\\)/\\1 \\2/"} ; END {print "s/ \\(32bit\\)-/-\\1 /;s/ \\(.*\\) /-\\1 /"}' > $spksed
+#	zypper se -i -t package | awk '/^i/{ print "s/\\("$3"\\)-\\([0-9A-E]\\)/\\1 \\2/"} ; END {print "s/ \\(32bit\\)-/-\\1 /;s/ \\(.*\\) /-\\1 /"}' > $spksed
 	echo "Processing file list ..."
 	lst_rpms pkg
 }
