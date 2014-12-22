@@ -1,6 +1,8 @@
 rpmcache
 ========
 
+Initial script taken from https://forums.opensuse.org/showthread.php/470592-clearing-rpm-cache
+
 This script is intended to delete the rpm and delta files in /var/cache/zypp/packages if you keep these files locally. If you don't know what it means, then you don't need it, as RPM files caching is disable by default for all repositories.
 
 The usage is simple (however that script was a piece of tiny and tricky bash programming). For those who might wonder, the magic key was sort -rV, that performs a sort of version numbers within text. Without this option, this script would have been significantly longer and more complicated. I wrote it a while ago but now that my file server is getting full, I had to test it and ended up rewriting it from scratch (as usual). It seems to be working .. but you'll use it - as always - at your own risk.
